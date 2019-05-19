@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical"
+        tools:context=".DetailActivity">
+
+        <TextView
+            android:id="@+id/movie_title"
+            style="@style/DetailsStyle"
+            android:layout_gravity="center"
+            android:fontFamily="casual"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            tools:text="MovieTitle" />
+
+        <ImageView
+            android:id="@+id/movie_thumbnail"
+            android:layout_width="130dp"
+            android:layout_height="193dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:contentDescription="@string/movie_thumbnail"
+            android:cropToPadding="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/background_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetailsStyle"
+                android:text="@string/released"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/release_date"
+                style="@style/DetailsStyle"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                tools:text="Release date" />
+
+            <TextView
+                style="@style/DetailsStyle"
+                android:layout_marginStart="50dp"
+                android:text="@string/rate"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/movie_rate"
+                style="@style/DetailsStyle"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="20sp"
+                tools:text="rating" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/overview"
+            style="@style/DetailsStyle"
+            android:fontFamily="casual"
+            android:textSize="15sp"
+            tools:text="overview" />
+
+
+
+
+
+    </LinearLayout>
+</ScrollView>
