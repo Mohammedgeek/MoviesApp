@@ -3,9 +3,18 @@ package com.example.geek.moviesapp.DataProcess;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
+@Entity(tableName = "movie")
 public class DataEncap implements Parcelable {
-
+    @PrimaryKey
+    @NonNull
     private String movieId;
     private String Title;
     private String Rate;
@@ -15,7 +24,7 @@ public class DataEncap implements Parcelable {
     private static final String imageBaseURL = "http://image.tmdb.org/t/p/";
     private static final String imageSize = "w185";
 
-    public DataEncap(String movieId, String Title, String Rate, String Overview, String posterUrl, String releaseDate) {
+    public DataEncap(@NonNull String movieId, String Title, String Rate, String Overview, String posterUrl, String releaseDate) {
         this.movieId = movieId;
         this.Title = Title;
         this.Rate = Rate;
@@ -24,7 +33,8 @@ public class DataEncap implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
-    public static final Creator<DataEncap> CREATOR = new Creator<DataEncap>() {
+
+    @Ignore public static final Creator<DataEncap> CREATOR = new Creator<DataEncap>() {
         @Override
         public DataEncap createFromParcel(Parcel in) {
             return new DataEncap(in);
@@ -35,8 +45,8 @@ public class DataEncap implements Parcelable {
             return new DataEncap[size];
         }
     };
-
-    public String getMovieId() {
+@NonNull
+    public  String getMovieId() {
         return movieId;
     }
 
@@ -59,6 +69,7 @@ public class DataEncap implements Parcelable {
     public String getReleaseDate() {
         return releaseDate;
     }
+
 
     public String getFullImageUrl() {
         return Uri.parse(imageBaseURL).buildUpon()

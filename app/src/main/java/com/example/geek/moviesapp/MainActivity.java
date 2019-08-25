@@ -1,6 +1,8 @@
 package com.example.geek.moviesapp;
 
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,14 +11,22 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+
+
+
+import com.example.geek.moviesapp.DataBase.MovieDatabase;
 import com.example.geek.moviesapp.DataProcess.DataEncap;
 
 import java.util.ArrayList;
@@ -33,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     ItemOffsetDecoration itemDecoration;
+    private MovieDatabase movieDb;
 
     NetworkInfo networkInfo;
     private static final int LOADER_ID = 0;
@@ -40,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public static String api = "https://api.themoviedb.org/3/movie";
     // put your own key to be able to run the app.
-    public static final String API_KEY = "your_key";
+    public static final String API_KEY = "";
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -77,10 +88,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             // getLoaderManager().initLoader(LOADER_ID, null, MainActivity.this).forceLoad();
             getSupportLoaderManager().initLoader(LOADER_ID, null, MainActivity.this).forceLoad();
         }
-
+        movieDb = MovieDatabase.getsInstance(getApplicationContext());
 
     }
+    private void showFavorites() {
 
+        final LiveData<List<DataEncap>> movie = movieDb.movieDao().loadAllMovies();
+        movie.observe(this, new Observer<List<DataEncap>>() {
+            @Override
+            public void onChanged(@Nullable List<DataEncap> movies) {
+                Log.d("DB", "DB CHANGED");
+                if (movies != null && movies.size() != 0) {
+                    movieAdapter.updateMovies(movies);
+                    moviesRecyclerView.setAdapter(movieAdapter);
+                } else {
+                    Toast toast = Toast.makeText
+                            (MainActivity.this, "There is no favorite movies to show!", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
+            }
+        });
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.setting, menu);
@@ -102,6 +132,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 editor.apply();
                 getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
                 break;
+            case R.id.favorite_action:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    getSupportLoaderManager().restartLoader(LOADER_ID, null,  MainActivity.this).forceLoad();
+
+                    item.setIcon(R.drawable.ic_star_border_white_24dp);
+                } else {
+                    showFavorites();
+                    item.setChecked(true);
+                    item.setIcon(R.drawable.ic_star_white_24dp);
+                }
         }
 
         return true;

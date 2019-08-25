@@ -20,6 +20,7 @@
     <string name="sort_by_title">Sort by</string>
     <string name="pupolar">pupolar</string>
     <string name="top_rated">top_rated</string>
-
+    <string name="trailer_play_button">Trailer Play Button</string>
+    <string name="favorite">Favorite</string>
 
 </resources>

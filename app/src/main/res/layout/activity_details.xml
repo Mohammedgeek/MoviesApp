@@ -68,6 +68,11 @@
                 android:textColor="@android:color/holo_green_dark"
                 android:textSize="20sp"
                 tools:text="rating" />
+            <CheckBox
+                android:id="@+id/favorite_checkbox"
+                style="?android:attr/starStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -82,6 +87,26 @@
             android:fontFamily="casual"
             android:textSize="15sp"
             tools:text="overview" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/background_dark" />
+
+        <ListView
+            android:id="@+id/trailer_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:minHeight="?android:attr/listPreferredItemHeight" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/background_dark" />
+
+        <ListView
+            android:id="@+id/review_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
 
 
 

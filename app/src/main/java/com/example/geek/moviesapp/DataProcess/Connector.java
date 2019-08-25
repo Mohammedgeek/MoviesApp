@@ -1,14 +1,10 @@
 package com.example.geek.moviesapp.DataProcess;
 
-import android.content.AsyncTaskLoader;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.geek.moviesapp.R;
+import com.example.geek.moviesapp.Review.Review;
+import com.example.geek.moviesapp.Trailer.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,9 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.geek.moviesapp.MainActivity.API_KEY;
-import static com.example.geek.moviesapp.MainActivity.api;
 
 public class Connector  {
     private static final String LOG = Connector.class.getSimpleName();
@@ -131,6 +124,45 @@ public class Connector  {
             Log.e(LOG, "Problem parsing the movies JSON results", e);
         }
         return movies;
+    }
+    public static List<Review> extractReviews(String jsonFile) {
+        List<Review> reviews = new ArrayList<>();
+        if (TextUtils.isEmpty(jsonFile)) {
+            return null;
+        }
+        try {
+            JSONObject root = new JSONObject(jsonFile);
+            JSONArray results = root.getJSONArray(KeyTags.rootKey);
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject object = results.getJSONObject(i);
+                String authorName = object.getString("author");
+                String review = object.getString("content");
+                reviews.add(new Review(authorName, review));
+            }
+        } catch (JSONException e) {
+            Log.e(LOG, "Problem parsing the movies JSON results", e);
+        }
+        return reviews;
+    }
+    public static List<Trailer> extractTrailer(String jsonFile) {
+        List<Trailer> trailer = new ArrayList<>();
+
+        if (TextUtils.isEmpty(jsonFile)) {
+            return null;
+        }
+        try {
+            JSONObject root = new JSONObject(jsonFile);
+            JSONArray results = root.getJSONArray(KeyTags.rootKey);
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject object = results.getJSONObject(i);
+                String label = object.getString("name");
+                String key = object.getString("key");
+                trailer.add(new Trailer(label, key));
+            }
+        } catch (JSONException e) {
+            Log.e(LOG, "Problem parsing the movies JSON results", e);
+        }
+        return trailer;
     }
 
 
